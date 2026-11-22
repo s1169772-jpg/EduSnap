@@ -1,0 +1,51 @@
+{
+  "@@locale": "zh",
+  "appTitle": "Edusnap",
+  "listTitle": "列表",
+  "settingsTitle": "設定",
+  "detailTitle": "詳情",
+  "addTitle": "新增",
+  "editTitle": "編輯",
+  "back": "返回",
+  "save": "儲存",
+  "update": "更新",
+  "edit": "編輯",
+  "add": "新增",
+  "settings": "設定",
+  "titleLabel": "標題",
+  "noteLabel": "內容",
+  "pickPhoto": "新增照片",
+  "changePhoto": "更換照片",
+  "removePhoto": "移除照片",
+  "camera": "相機",
+  "gallery": "相簿",
+  "missingTitleDialogTitle": "缺少標題",
+  "missingTitleDialogMessage": "儲存前請先輸入標題。",
+  "ok": "確定",
+  "leaveDialogTitle": "捨棄變更？",
+  "leaveDialogMessage": "您有未儲存的資料，確定要離開嗎？",
+  "leaveConfirm": "離開",
+  "leaveCancel": "留下",
+  "permissionDeniedTitle": "需要權限",
+  "permissionDeniedMessage": "需要照片權限才能新增圖片，請在設定中開啟。",
+  "openSettings": "開啟設定",
+  "cancel": "取消",
+  "landingAppName": "Edusnap",
+  "landingHeadline": "歡迎使用 Edusnap",
+  "landingSubtitle": "記錄課堂、保持整理，以專注的方式學習。",
+  "getStarted": "開始使用",
+  "language": "語言",
+  "languageEnglish": "English",
+  "languageChinese": "中文",
+  "confirm": "確認",
+  "createdOn": "{date} 建立",
+  "@createdOn": {
+    "description": "Journal entry creation date label",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "2026-11-17"
+      }
+    }
+  }
+}

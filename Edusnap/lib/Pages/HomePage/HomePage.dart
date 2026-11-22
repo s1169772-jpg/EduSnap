@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../Component/JournalCard/JournalCard.dart';
 import '../../Models/JournalEntry.dart';
+import '../../Services/LocaleController.dart';
+import '../../l10n/app_localizations.dart';
 import '../Add/AddPage.dart';
 import '../Detail/DetailPage.dart';
 import '../Settings/SettingsPage.dart';
@@ -21,6 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late final HomePageController _controller;
   late final bool _ownsController;
+  final LocaleController _localeController = LocaleController.instance;
 
   @override
   void initState() {
@@ -33,6 +36,8 @@ class _HomePageState extends State<HomePage> {
           onOpenSettings: _openSettings,
         );
     _controller.addListener(_onControllerChanged);
+    _localeController.addListener(_onControllerChanged);
+    _controller.loadEntries();
   }
 
   void _onControllerChanged() {
@@ -47,9 +52,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
     if (!mounted || updated == null) return;
-    // If the entry was edited, replace it in the list
     if (!identical(updated, entry)) {
-      _controller.updateEntry(entry, updated);
+      await _controller.updateEntry(entry, updated);
     }
   }
 
@@ -59,7 +63,7 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute<JournalEntry>(builder: (_) => const AddPage()),
     );
     if (!mounted || entry == null) return;
-    _controller.addEntry(entry);
+    await _controller.addEntry(entry);
   }
 
   void _openSettings() {
@@ -72,6 +76,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _controller.removeListener(_onControllerChanged);
+    _localeController.removeListener(_onControllerChanged);
     if (_ownsController) {
       _controller.dispose();
     }
@@ -82,7 +87,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_controller.title),
+        title: Text(
+          AppLocalizations.of(context).listTitle,
+          key: ValueKey(LocaleController.instance.locale.toString()),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.settings),
           onPressed: _controller.openSettings,
@@ -97,28 +105,32 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: ListView.separated(
-            itemCount: _controller.entries.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 8),
-            itemBuilder: (_, index) {
-              final entry = _controller.entries[index];
-              return Dismissible(
-                key: ValueKey('${entry.title}_${entry.createdAt.toIso8601String()}'),
-                direction: DismissDirection.endToStart,
-                background: Container(
-                  color: Colors.red,
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.only(right: 16),
-                  child: const Icon(Icons.delete, color: Colors.white),
+          child: _controller.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.separated(
+                  itemCount: _controller.entries.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 8),
+                  itemBuilder: (_, index) {
+                    final entry = _controller.entries[index];
+                    return Dismissible(
+                      key: ValueKey(
+                        '${entry.title}_${entry.createdAt.toIso8601String()}',
+                      ),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 16),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      onDismissed: (_) => _controller.remove(entry),
+                      child: JournalCard(
+                        entry: entry,
+                        onTap: () => _controller.openDetail(entry),
+                      ),
+                    );
+                  },
                 ),
-                onDismissed: (_) => _controller.remove(entry),
-                child: JournalCard(
-                  entry: entry,
-                  onTap: () => _controller.openDetail(entry),
-                ),
-              );
-            },
-          ),
         ),
       ),
     );

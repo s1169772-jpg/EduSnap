@@ -1,0 +1,51 @@
+{
+  "@@locale": "en",
+  "appTitle": "Edusnap",
+  "listTitle": "List",
+  "settingsTitle": "Settings",
+  "detailTitle": "Detail",
+  "addTitle": "Add",
+  "editTitle": "Edit",
+  "back": "Back",
+  "save": "Save",
+  "update": "Update",
+  "edit": "Edit",
+  "add": "Add",
+  "settings": "Settings",
+  "titleLabel": "Title",
+  "noteLabel": "Note",
+  "pickPhoto": "Add photo",
+  "changePhoto": "Change photo",
+  "removePhoto": "Remove photo",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "missingTitleDialogTitle": "Title is missing",
+  "missingTitleDialogMessage": "Please enter a title before saving.",
+  "ok": "OK",
+  "leaveDialogTitle": "Discard changes?",
+  "leaveDialogMessage": "You have unsaved data. Are you sure you want to leave?",
+  "leaveConfirm": "Leave",
+  "leaveCancel": "Stay",
+  "permissionDeniedTitle": "Permission needed",
+  "permissionDeniedMessage": "Photo access is required to add an image. Please enable it in Settings.",
+  "openSettings": "Open Settings",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "landingAppName": "Edusnap",
+  "landingHeadline": "Welcome to Edusnap",
+  "landingSubtitle": "Capture lessons, stay organized, and learn in focused snaps.",
+  "getStarted": "Get started",
+  "language": "Language",
+  "languageEnglish": "English",
+  "languageChinese": "Chinese",
+  "createdOn": "Created on {date}",
+  "@createdOn": {
+    "description": "Journal entry creation date label",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "2026-11-17"
+      }
+    }
+  }
+}

@@ -1,10 +1,13 @@
 // ignore_for_file: file_names
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../Models/JournalEntry.dart';
 import '../Add/AddPage.dart';
 import 'DetailPageController.dart';
+import '../../l10n/app_localizations.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({
@@ -43,7 +46,6 @@ class _DetailPageState extends State<DetailPage> {
 
   void _goBack() {
     if (!mounted) return;
-    // Pop the current (possibly updated) entry so List can refresh
     Navigator.of(context).pop(_controller.entry);
   }
 
@@ -67,6 +69,40 @@ class _DetailPageState extends State<DetailPage> {
     super.dispose();
   }
 
+  Widget _buildPhoto(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final path = _controller.entryImagePath;
+    final hasImage = path != null && path.isNotEmpty;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
+        child: hasImage
+            ? Image.file(
+                File(path),
+                fit: BoxFit.cover,
+                width: double.infinity,
+                errorBuilder: (_, _, _) => _photoPlaceholder(colorScheme),
+              )
+            : _photoPlaceholder(colorScheme),
+      ),
+    );
+  }
+
+  Widget _photoPlaceholder(ColorScheme colorScheme) {
+    return ColoredBox(
+      color: colorScheme.surfaceContainerHighest,
+      child: Center(
+        child: Icon(
+          Icons.image_outlined,
+          size: 48,
+          color: colorScheme.onSurfaceVariant,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -80,11 +116,11 @@ class _DetailPageState extends State<DetailPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_controller.title),
+          title: Text(AppLocalizations.of(context).detailTitle),
           actions: [
             TextButton(
               onPressed: _controller.edit,
-              child: Text(_controller.editLabel),
+              child: Text(AppLocalizations.of(context).edit),
             ),
           ],
         ),
@@ -102,11 +138,13 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  _controller.entryDate,
+                  AppLocalizations.of(context).createdOn(_controller.entryDate),
                   style: textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
+                const SizedBox(height: 16),
+                _buildPhoto(context),
                 const SizedBox(height: 16),
                 Text(
                   _controller.entryNote,
@@ -117,7 +155,7 @@ class _DetailPageState extends State<DetailPage> {
                 const Spacer(),
                 FilledButton(
                   onPressed: _controller.goBack,
-                  child: Text(_controller.backLabel),
+                  child: Text(AppLocalizations.of(context).back),
                 ),
                 const SizedBox(height: 12),
               ],

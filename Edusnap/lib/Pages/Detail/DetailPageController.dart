@@ -23,6 +23,7 @@ class DetailPageController extends ChangeNotifier {
 
   String get entryTitle => _entry.title;
   String get entryNote => _entry.note;
+  String? get entryImagePath => _entry.imagePath;
 
   String get entryDate {
     final date = _entry.createdAt;
